@@ -1,11 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import Task from "../task/task";
 import initialTasks from "../../data/data"
-import TaskForm from "../taskForm/taskForm";
+import NewTask from "../newTask/newTask";
 
-function Tasks() {
-    const staticTasks = initialTasks.map(
-        task => <Task title={task.title}
+const Tasks =(props)=> {
+    const [tasksList, setTask] = useState(initialTasks)
+    const addTaskHandler =(task)=>{
+        setTask(prevState=>{
+            return [task,...prevState]
+        })
+    }
+    const staticTasks = tasksList.map(
+        task => <Task id={task.id}
+                      title={task.title}
                       created={task.created}
                       status={task.status}
                       date={task.date}
@@ -13,6 +20,7 @@ function Tasks() {
     return (
         <div className="col-md-8">
             <div className="card-hover-shadow-2x mb-3 card">
+                <NewTask onNewTasks={addTaskHandler}/>
                 <div className="card-header-tab card-header">
                     <div className="card-header-title font-size-lg text-capitalize font-weight-normal">
                         <i className="fa fa-tasks"></i>&nbsp;To Do List
@@ -29,12 +37,7 @@ function Tasks() {
                         </div>
                     </perfect-scrollbar>
                 </div>
-
-                <div class="d-block text-right card-footer">
-                    <TaskForm/>
-                    <button class="mr-2 btn btn-link btn-sm">Cancel</button>
-                    <button class="btn btn-primary">Add Task</button>
-                </div>
+                <div className="d-block text-right card-footer"> </div>
             </div>
         </div>
     );
